@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFD600">
+<title>Goponghor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#ffd600;--ink:#171717;--muted:#68707d;--paper:#fdf9ee}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(145deg,#fffdf7,var(--paper));font-family:'Hind Siliguri',system-ui,sans-serif;color:var(--ink);display:grid;place-items:center;padding:24px}
+.wrap{width:min(100%,520px)}
+.site-brand{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #eee6d3;border-radius:13px;padding:8px 11px;margin:0 0 12px;box-shadow:0 3px 12px #00000008}
+.site-brand .brand-icon{width:42px;height:42px;flex:0 0 42px;border-radius:9px;border:1.5px solid #ffd600;background:#fff;display:grid;place-items:center}
+.site-brand .brand-icon img{width:100%;height:100%;object-fit:contain;border-radius:7px}
+.site-brand .brand-name{font:800 18px system-ui,sans-serif;letter-spacing:-.3px;color:#111;line-height:1.1}
+.site-brand .brand-name span{color:#8000FF}
+.site-brand .brand-sub{font-size:11px;color:#64748b;font-weight:700;margin-top:1px}
+.panel{background:#fff;border:1px solid #eee6d3;border-radius:24px;padding:26px;box-shadow:0 18px 55px #493a1510}
+h1{text-align:center;font-size:27px;margin:0 0 5px;font-weight:800}
+.sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 24px}
+.methods{display:grid;gap:12px}
+.method{width:100%;border:1.5px solid #e8e5dd;background:#fff;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;font:inherit;transition:.18s}
+.method:hover{border-color:#e8b900;transform:translateY(-1px)}
+.method[aria-pressed=true]{border-color:#e2ae00;background:#fffdf2;box-shadow:0 0 0 3px #ffd60025}
+.method img{width:46px;height:46px;object-fit:contain;border-radius:12px;background:#fff;padding:4px}
+.rocket-logo{width:46px;height:46px;flex:0 0 46px;border-radius:12px;background:#fff;overflow:hidden;display:grid;place-items:center}
+.rocket-logo img{width:100%;height:100%;object-fit:contain;object-position:center;padding:2px;background:transparent}
+.method strong{display:block;font-size:17px;font-weight:800}
+.method small{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+.check{margin-left:auto;width:22px;height:22px;border:1.5px solid #d7d7d7;border-radius:50%;display:grid;place-items:center;color:transparent;font-size:13px}
+.method[aria-pressed=true] .check{background:#ffd600;border-color:#e2ae00;color:#171717}
+#paymentSetup{display:none;margin-top:18px}
+#paymentSetup.visible{display:block}
+.payment-panel{border-radius:16px;padding:18px;color:#fff;box-shadow:0 8px 22px #1112}
+.payment-panel.bkash{background:#E2136E}
+.payment-panel.nagad{background:#C90008}
+.payment-panel.rocket{background:#7C3AED}
+.payment-panel h2{text-align:center;font-size:19px;margin:0 0 5px;font-weight:800}
+.payment-panel .sub{text-align:center;font-size:12px;color:#ffffffdf;margin:0 0 16px}
+.trx{width:100%;height:47px;border:0;border-radius:9px;background:white;color:#111827;text-align:center;padding:0 12px;font:700 15px inherit;outline:none}
+.trx::placeholder{color:#94a3b8}
+.instructions{border-top:1px solid #ffffff55;margin-top:17px;padding-top:13px}
+.instructions h3{font-size:12px;letter-spacing:1px;margin:0 0 12px}
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.steps li{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.45;color:#ffffffed}
+.dot{width:7px;height:7px;border-radius:50%;background:#fff;margin-top:7px;flex:none}
+.highlight{color:#FCD535;font-weight:800}
+.number-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.number{font-weight:800;color:#FCD535;font-size:16px;letter-spacing:.4px}
+.copy{border:0;border-radius:7px;background:#0004;color:white;padding:7px 11px;font:700 12px inherit;cursor:pointer}
+.copy:active{transform:scale(.97)}
+.verify{width:100%;border:0;border-radius:11px;padding:14px;margin-top:13px;color:white;font:800 17px inherit;cursor:pointer}
+.verify.bkash{background:#E2136E}
+.verify.nagad{background:#C90008}
+.verify.rocket{background:#7C3AED}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#111827;color:#fff;padding:10px 16px;border-radius:9px;font-size:13px;pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.copyright{text-align:center;color:#999;font-size:12px;margin-top:18px}
+footer{text-align:center;color:#999;font-size:11px;margin-top:18px}.copyright a{color:inherit;text-decoration:none}
+@media(max-width:420px){body{padding:16px}.panel{padding:21px 17px}h1{font-size:24px}}
+@media(max-width:360px){.payment-panel{padding:15px}.steps li{font-size:13px}}
+
+
+.payment-view .brand-icon{width:38px;height:38px;flex:0 0 38px;border-radius:10px;border:1.5px solid #ffd600;background:#fff;display:grid;place-items:center;overflow:hidden}
+.payment-view .brand-icon img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+.payment-view .brand-name{font:800 18px system-ui,sans-serif;letter-spacing:-.3px;color:#111;line-height:1.1}
+.payment-view .brand-name span{color:#8000FF}
+.payment-view .brand-sub{font-size:11px;color:#64748b;font-weight:700;margin-top:1px}
+.payment-view .brandbar{width:100%;min-width:0}
+.payment-view .brand{flex:1;min-width:0}
+.payment-view .brandbar img{max-width:100%;height:auto}
+
+.payment-view[hidden]{display:none!important}
+.payment-view{width:min(100%,520px);margin-inline:auto;min-width:0}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-radius:13px;padding:8px 10px;margin:0 0 16px;box-shadow:0 3px 12px #00000008}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.back-button{border:1px solid #e5e7eb;background:#f8fafc;border-radius:10px;padding:7px 11px;color:#475569;font:700 13px 'Hind Siliguri',sans-serif;cursor:pointer;white-space:nowrap}
+.heading{text-align:center;margin:0 0 22px}
+.heading h1{font-size:26px;line-height:1.2;margin:0 0 7px;font-weight:800}
+.heading p{margin:0;color:#64748b;font-size:14px}
+.payment-view .payment-panel{border-radius:16px;padding:18px;color:#fff;box-shadow:0 8px 22px #1112}
+.payment-view .payment-panel h2{text-align:center;font-size:19px;margin:0 0 5px;font-weight:800}
+.payment-view .payment-panel .sub{text-align:center;font-size:12px;color:#ffffffdf;margin:0 0 16px}
+.payment-view .trx{width:100%;height:47px;border:0;border-radius:9px;background:white;color:#111827;text-align:center;padding:0 12px;font:700 15px 'Hind Siliguri',sans-serif;outline:none}
+.payment-view .instructions{border-top:1px solid #ffffff55;margin-top:17px;padding-top:13px}
+.payment-view .instructions h3{font-size:12px;letter-spacing:1px;margin:0 0 12px}
+.payment-view .steps{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.payment-view .steps li{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.45;color:#ffffffed}
+.payment-view .dot{width:7px;height:7px;border-radius:50%;background:#fff;margin-top:7px;flex:none}
+.payment-view .highlight{color:#FCD535;font-weight:800}
+.payment-view .number-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.payment-view .number{font-weight:800;color:#FCD535;font-size:16px;letter-spacing:.4px}
+.payment-view .copy{border:0;border-radius:7px;background:#0004;color:white;padding:7px 11px;font:700 12px 'Hind Siliguri',sans-serif;cursor:pointer}
+.payment-view .verify{width:100%;border:0;border-radius:11px;padding:14px;margin-top:13px;color:white;font:800 17px 'Hind Siliguri',sans-serif;cursor:pointer}
+@media(max-width:420px){.payment-view .heading h1{font-size:24px}}
+
+</style>
+</head>
+<body>
+<main class="wrap" id="homeView">
+<header class="site-brand"><span class="brand-icon"><img src="https://i.pinimg.com/736x/20/b4/01/20b401e4a4b168f32a805f08b8ba287b.jpg" alt="Goponghor logo"></span><div><div class="brand-name">Gopon<span>ghor</span></div><div class="brand-sub">গোপন ঘর অফিসিয়াল</div></div></header>
+<section class="panel">
+<h1>পেমেন্ট মেথড</h1>
+<p class="sub">আপনার পছন্দের পেমেন্ট মাধ্যমটি নির্বাচন করুন</p>
+<div class="methods" id="paymentMethods" role="group" aria-label="Payment methods">
+<button class="method" type="button" aria-pressed="false" data-method="bkash">
+<img src="https://secure.zinipay.com/payments/bkash.png" alt="bKash" onerror="this.style.display='none'">
+<span><strong>bKash</strong><small>বিকাশ</small></span><span class="check">✓</span>
+</button>
+<button class="method" type="button" aria-pressed="false" data-method="nagad">
+<img src="https://secure.zinipay.com/payments/nagad.png" alt="Nagad" onerror="this.style.display='none'">
+<span><strong>Nagad</strong><small>নগদ</small></span><span class="check">✓</span>
+</button>
+<button class="method" type="button" aria-pressed="false" data-method="rocket">
+<span class="rocket-logo"><img src="https://i.pinimg.com/736x/ab/3f/82/ab3f82defa774cf67c087fef733e7d4e.jpg" alt="Rocket official logo"></span>
+<span><strong>Rocket</strong><small>রকেট</small></span><span class="check">✓</span>
+</button>
+</div>
+
+<footer class="copyright">© goponghor.com</footer>
+</main>
+<div class="wrap payment-view" id="paymentView" hidden></div>
+<div id="toast" class="toast">কপি হয়েছে</div>
+<script>
+const paymentMethods = {
+  bkash: { name: 'bKash', localName: 'বিকাশ', number: '01770811260', color: '#E2136E' },
+  nagad: { name: 'Nagad', localName: 'নগদ', number: '01770811260', color: '#C90008' },
+  rocket: { name: 'Rocket', localName: 'রকেট', number: '01723975179', color: '#7C3AED' }
+};
+
+
+const paymentView = document.getElementById('paymentView');
+const homeView = document.getElementById('homeView');
+
+function showPayment(methodKey) {
+  const method = paymentMethods[methodKey];
+  if (!method) return;
+
+  homeView.hidden = true;
+  paymentView.hidden = false;
+  paymentView.innerHTML = `
+    <header class="brandbar">
+      <div class="brand">
+        <span class="brand-icon"><img src="https://i.pinimg.com/736x/20/b4/01/20b401e4a4b168f32a805f08b8ba287b.jpg" alt="Goponghor logo"></span>
+        <div><div class="brand-name">Gopon<span>ghor</span></div><div class="brand-sub">গোপন ঘর অফিসিয়াল</div></div>
+      </div>
+      <button class="back-button" id="backToMethods" type="button">‹ &nbsp; ফিরে যান</button>
+    </header>
+    <header class="heading">
+      <h1>${method.name} পেমেন্ট</h1>
+      <p>আপনার পেমেন্ট সম্পন্ন করতে নিচের নির্দেশনা অনুসরণ করুন</p>
+    </header>
+    <section class="payment-panel ${methodKey}">
+      <h2>ট্রানজেকশন আইডি দিন</h2>
+      <p class="sub">টাকা পাঠানো সম্পন্ন হলে প্রাপ্ত TrxID অথবা আপনার পেমেন্ট নাম্বারের শেষ ৪ সংখ্যা দিন</p>
+      <input id="trx-input" class="trx" type="text" autocomplete="off" placeholder="ট্রানজেকশন আইডি দিন">
+      <div class="instructions">
+        <h3>INSTRUCTIONS</h3>
+        <ul class="steps">
+          <li><span class="dot"></span><span><b class="highlight">${method.name}</b> অ্যাপে যান।</span></li>
+          <li><span class="dot"></span><span><b class="highlight">"Send Money"</b> -এ ক্লিক করুন।</span></li>
+          <li><span class="dot"></span><span>প্রাপক নম্বর হিসেবে এই নম্বরটি লিখুন:<div class="number-row"><span class="number" id="receiverNumber">${method.number}</span><button class="copy" id="copyNumber" type="button">Copy</button></div></span></li>
+          <li><span class="dot"></span><span>এখন উপরের বক্সে আপনার <b class="highlight">Transaction ID</b> দিন এবং <b class="highlight">VERIFY</b> করুন।</span></li>
+        </ul>
+      </div>
+    </section>
+    <button class="verify ${methodKey}" id="verifyPayment" type="button">VERIFY TRANSACTION</button>
+    <footer class="copyright">© goponghor.com</footer>
+  `;
+
+  paymentView.querySelector('#backToMethods').addEventListener('click', () => {
+    location.hash = '';
+  });
+  paymentView.querySelector('#copyNumber').addEventListener('click', copyNumber);
+  paymentView.querySelector('#verifyPayment').addEventListener('click', () => {
+    const trx = paymentView.querySelector('#trx-input').value.trim();
+    if (!trx) {
+      alert('অনুগ্রহ করে TrxID অথবা পেমেন্ট নম্বরের শেষ ৪ সংখ্যা লিখুন।');
+      return;
+    }
+    alert(`আপনার ${method.localName} পেমেন্টের স্ক্রিনশট গোপন ঘর এডমিনের কাছে জমা দিন। গোপন ঘর এডমিন আপনাকে ম্যানুয়ালি ভেরিফাই করে দিবে।`);
+  });
+}
+
+async function copyNumber() {
+  const value = document.getElementById('receiverNumber').textContent;
+  try {
+    await navigator.clipboard.writeText(value);
+  } catch (e) {
+    const el = document.createElement('textarea');
+    el.value = value;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    el.remove();
+  }
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1500);
+}
+
+function renderRoute() {
+  const methodKey = new URLSearchParams(location.hash.slice(1)).get('payment');
+  if (paymentMethods[methodKey]) {
+    document.querySelectorAll('button.method').forEach(item => {
+      item.setAttribute('aria-pressed', item.dataset.method === methodKey ? 'true' : 'false');
+    });
+    showPayment(methodKey);
+  } else {
+    paymentView.hidden = true;
+    homeView.hidden = false;
+  }
+}
+
+document.getElementById('paymentMethods').addEventListener('click', event => {
+  const button = event.target.closest('button.method');
+  if (!button) return;
+  location.hash = 'payment=' + encodeURIComponent(button.dataset.method);
+});
+
+window.addEventListener('hashchange', renderRoute);
+renderRoute();
+
+</script>
+</body>
+</html>
